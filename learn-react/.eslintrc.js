@@ -21,7 +21,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'jsx-a11y', 'prettier'],
   rules: {
     'prettier/prettier': [
       'error',
@@ -42,6 +42,26 @@ module.exports = {
     'react/function-component-definition': [
       2,
       { namedComponents: ['arrow-function', 'function-declaration'] },
+    ],
+    'jsx-a11y/anchor-is-valid': [
+      'off',
+      {
+        components: ['Link'],
+        specialLink: ['hrefLeft', 'hrefRight'],
+        aspects: ['invalidHref', 'preferButton'],
+      },
+    ],
+    // @typescript-eslint/no-unused-vars
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn'],
+    'react/require-default-props': 'off',
+    // 'react/no-unused-prop-types': 0,
+    'react.prop-types': 0,
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        labelAttributes: ['htmlFor'],
+      },
     ],
   },
   ignorePatterns: ['.eslintrc.js'],
