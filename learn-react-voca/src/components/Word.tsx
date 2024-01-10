@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IWord } from '../types/Type';
 
@@ -15,8 +15,8 @@ function Word({ word: w }: IProps) {
     setIsShow(!isShow);
   };
 
-  const toggleDone = async () => {
-    await axios
+  const toggleDone = () => {
+    axios
       .put(`http://localhost:5000/words/${word.id}`, {
         ...word,
         isDone: !isDone,
@@ -25,46 +25,13 @@ function Word({ word: w }: IProps) {
         if (res.statusText === 'OK') {
           setIsDone(!isDone);
         }
-      })
-      .catch((e) => console.log(e));
-
-    // ? axios 파라미터
-    // const response = await axios({
-    //   method: 'PUT',
-    //   url: `http://localhost:5000/words/${word.id}`,
-    //   data: {
-    //     ...word,
-    //     isDone: !isDone,
-    //   },
-    // }).then((res) => {
-    //   if (res.statusText === 'OK') {
-    //     setIsDone(!isDone);
-    //   }
-    // });
-
-    // ? fetch 사용
-    // fetch(`http://localhost:5000/words/${word.id}`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     ...word,
-    //     isDone: !isDone,
-    //   }),
-    // }).then((res) => {
-    //   if (res.ok) {
-    //     setIsDone(!isDone);
-    //   }
-    // });
+      });
   };
 
   const del = () => {
     if (window.confirm('삭제 하시겠습니까?')) {
-      fetch(`http://localhost:5000/words/${word.id}`, {
-        method: 'DELETE',
-      }).then((res) => {
-        if (res.ok) {
+      axios.delete(`http://localhost:5000/words/${word.id}`).then((res) => {
+        if (res.statusText === 'OK') {
           setWord({
             ...word,
             id: 0,
@@ -74,7 +41,7 @@ function Word({ word: w }: IProps) {
     }
   };
 
-  if (word.id === null) return null;
+  if (word.id === 0) return null;
 
   return (
     <tr key={word.id} className={isDone ? 'off' : ''}>

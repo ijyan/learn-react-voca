@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { IDay } from '../types/Type';
 import useFetch from '../hooks/useFetch';
 
@@ -7,20 +8,17 @@ function CreateDay() {
   const days: IDay[] = useFetch('http://localhost:5000/days');
   const navigate = useNavigate();
   const addDay = (e: React.FormEvent) => {
-    fetch(`http://localhost:5000/days/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    axios
+      .post(`http://localhost:5000/days/`, {
         day: days.length + 1,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        alert('생성이 완료 되었습니다.');
-        navigate(`/`);
-      }
-    });
+      })
+      .then((res) => {
+        if (res.statusText === 'Created') {
+          alert('생성이 완료 되었습니다.');
+          navigate(`/`);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
