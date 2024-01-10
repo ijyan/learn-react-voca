@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { IWord } from '../types/Type';
 
 interface IProps {
@@ -7,28 +8,55 @@ interface IProps {
 
 function Word({ word: w }: IProps) {
   const [word, setWord] = useState(w);
-  const [isShow, setIsShow] = useState(false);
-  const [isDone, setIsDone] = useState(word.isDone);
+  const [isShow, setIsShow] = useState<boolean>(false);
+  const [isDone, setIsDone] = useState<boolean>(word.isDone);
 
   const toggleShow = () => {
     setIsShow(!isShow);
   };
 
-  const toggleDone = () => {
-    fetch(`http://localhost:5000/words/${word.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+  const toggleDone = async () => {
+    await axios
+      .put(`http://localhost:5000/words/${word.id}`, {
         ...word,
         isDone: !isDone,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        setIsDone(!isDone);
-      }
-    });
+      })
+      .then((res) => {
+        if (res.statusText === 'OK') {
+          setIsDone(!isDone);
+        }
+      })
+      .catch((e) => console.log(e));
+
+    // ? axios 파라미터
+    // const response = await axios({
+    //   method: 'PUT',
+    //   url: `http://localhost:5000/words/${word.id}`,
+    //   data: {
+    //     ...word,
+    //     isDone: !isDone,
+    //   },
+    // }).then((res) => {
+    //   if (res.statusText === 'OK') {
+    //     setIsDone(!isDone);
+    //   }
+    // });
+
+    // ? fetch 사용
+    // fetch(`http://localhost:5000/words/${word.id}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     ...word,
+    //     isDone: !isDone,
+    //   }),
+    // }).then((res) => {
+    //   if (res.ok) {
+    //     setIsDone(!isDone);
+    //   }
+    // });
   };
 
   const del = () => {

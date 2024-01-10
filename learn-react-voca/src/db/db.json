@@ -30,7 +30,7 @@
       "day": 1,
       "eng": "apple",
       "kor": "사과",
-      "isDone": false
+      "isDone": true
     },
     {
       "id": 3,
@@ -92,7 +92,7 @@
       "day": 1,
       "eng": "earphone",
       "kor": "이어폰",
-      "isDone": false,
+      "isDone": true,
       "id": 12
     }
   ]
